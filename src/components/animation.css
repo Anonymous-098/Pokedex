@@ -1,0 +1,25 @@
+.slideOut {
+  animation: slideOutKeyframes 1500ms ease forwards;
+}
+
+@keyframes slideOutKeyframes {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(600px);
+  }
+}
+
+.slideIn {
+  animation: slideInKeyframes 1500ms ease forwards;
+}
+
+@keyframes slideInKeyframes {
+  from {
+    transform: translateX(600px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

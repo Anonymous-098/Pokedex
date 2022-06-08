@@ -11,9 +11,9 @@ const App = () => {
   const [currentPokemonId, setCurrentPokemonId] = useState("");
   const [currentPokemon, setCurrentPokemon] = useState();
 
-  const [isClicked,setIsClicked] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
 
-  var kantoLength = 15;
+  var kantoLength = 151;
 
   //// PRIMARY SOLUTION
   useEffect(() => {
@@ -90,8 +90,13 @@ const App = () => {
             <PokemonList
               getPokemonIdHandler={getPokemonIdHandler}
               pokemons={pokemons}
+              setIsClicked={setIsClicked}
             />
-            <PokemonInfo currentPokemonInfo={currentPokemon} />
+            <PokemonInfo
+              currentPokemonInfo={currentPokemon}
+              isClicked={isClicked}
+              setIsClicked={setIsClicked}
+            />
           </div>
         </>
       )}

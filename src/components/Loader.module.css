@@ -2,12 +2,10 @@
   height: 50vh;
   width: 30%;
   opacity: 1;
-  animation: loading 3s ease forwards infinite;
+  animation: loading 4s ease infinite;
   display: block;
   margin: 20vh auto;
   text-align: center;
-  /* display: flex; */
-  /* justify-content: center; */
 }
 
 @keyframes loading {

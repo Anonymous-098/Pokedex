@@ -12,6 +12,7 @@ const PokemonList = (props) => {
             pokemonName={pokemon.pokemonName}
             pokemonData={pokemon.pokemonData}
             getPokemonIdHandler={props.getPokemonIdHandler}
+            setIsClicked={props.setIsClicked}
           />
         );
       })}

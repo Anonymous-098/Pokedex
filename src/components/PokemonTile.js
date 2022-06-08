@@ -31,7 +31,6 @@ const PokemonTile = (props) => {
     props.getPokemonIdHandler(props.pokemonData.id);
     props.setIsClicked(true);
   }
-
   
   return (
     <li key={props.id} className={classes.tile} onClick={wrapperFunction} >
