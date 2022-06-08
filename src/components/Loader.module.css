@@ -1,0 +1,20 @@
+.loader {
+  height: 50vh;
+  width: 30%;
+  opacity: 1;
+  animation: loading 3s ease forwards infinite;
+  display: block;
+  margin: 20vh auto;
+  text-align: center;
+  /* display: flex; */
+  /* justify-content: center; */
+}
+
+@keyframes loading {
+  from {
+    transform: rotateZ(0deg);
+  }
+  to {
+    transform: rotateZ(360deg);
+  }
+}

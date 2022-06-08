@@ -1,0 +1,15 @@
+fetch("https://pokeapi.co/api/v2/pokemon/" + pokemon)
+  .then(function (response) {
+    setIsLoading(true);
+    return response.json();
+  })
+  .then(function (data) {
+    setAnimatedSprite(
+      data.sprites.versions["generation-v"]["black-white"].animated
+        .front_default
+    );
+    setIsLoading(false);
+    console.log(1);
+    return data
+      .sprites.versions["generation-v"]["black-white"].animated.front_default;
+  });

@@ -1,0 +1,18 @@
+async function dataHandler() {
+    // setIsLoading(true);
+
+    const url = "https://pokeapi.co/api/v2/pokemon/?limit=15";
+    const response = await fetch(url);
+    const data = await response.json();
+    const pokemonList = data.results;
+
+    const pokemonObjects = pokemonList.map((pokemon) => {
+      return pokemon;
+    });
+
+    setPokemons(pokemonObjects);
+
+    // setIsLoading(false);
+  }
+
+  {!isLoading && pokemons.length <152 && <Loader />}

@@ -1,0 +1,14 @@
+.list{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    /* width: 65vw; */
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    /* grid-template-columns: repeat(auto-fit,minmax(30rem,1fr)); */
+    list-style: none;
+    grid-gap: 5rem;
+    margin: 2rem 0;
+    margin-left: 5rem;
+}

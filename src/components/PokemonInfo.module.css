@@ -1,0 +1,56 @@
+.pokeInfo{
+    height: 80vh;
+    width: 20%;
+    background-color: white;
+    margin: 8rem 0 4rem 0;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    /* position: sticky;
+    top: 10vh;
+    box-sizing: border-box; */
+    position: fixed;
+    right: 12.5%;
+    z-index: 10;
+    /* animation: slideOutKeyframes 2s ease forwards; */
+}
+
+.img{
+    transform: scale(0.8);
+    position: relative;
+    top: -135px;
+    image-rendering: pixelated;
+}
+
+.sprite{
+    transform: scale(2);
+    image-rendering: pixelated;
+    position: relative;
+    top: -50px;
+}
+
+.slideOut{
+    animation: slideOutKeyframes 2s ease forwards;
+}
+
+@keyframes slideOutKeyframes {
+    from{
+        transform: translateX(0);
+    }
+    to{
+        transform: translateX(600px);
+    }
+}
+
+.slideIn{
+    animation: slideInKeyframes 2s ease forwards;
+}
+
+@keyframes slideInKeyframes {
+    from{
+        transform: translateX(600px);
+    }
+    to{
+        transform: translateX(0);
+    }
+}

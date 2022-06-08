@@ -1,0 +1,74 @@
+import React, { useEffect, useState } from "react";
+import PokeBall from "./svgs/PokeBall";
+import classes from "./App.module.css";
+import Loader from "./components/Loader";
+import PokemonList from "./components/PokemonList";
+import PokemonInfo from "./components/PokemonInfo";
+
+const App = () => {
+  const [pokemons, setPokemons] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentPokemon,setCurrentPokemon] = useState(null);
+
+  let temp = [];
+  var kantoLength = 15;
+
+  //// PRIMARY SOLUTION
+  useEffect(() => {
+    fetch("https://pokeapi.co/api/v2/pokemon/?limit=" + kantoLength)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        Promise.all(
+          data.results.map((pokemon) => {
+            return fetch("https://pokeapi.co/api/v2/pokemon/" + pokemon.name)
+              .then(function (nestedResponse) {
+                return nestedResponse.json();
+              })
+              .then(function (nestedData) {
+                var pokemonObject = {
+                  pokemonName: pokemon.name,
+                  pokemonData: nestedData,
+                };
+                sendData(pokemonObject);
+                return pokemonObject;
+              });
+          })
+        );
+      });
+  }, []);
+
+  function sendData(pokeObj) {
+    var obj = pokeObj;
+    setPokemons((prevState) => {
+      return [...prevState, obj];
+    });
+    temp.push(obj);
+    setIsLoading(false);
+  }
+  
+  const getPokemonIdHandler = (id) =>{
+    setCurrentPokemon(id-1);
+  }
+
+  return (
+    <>
+      {isLoading && <Loader />}
+      {!isLoading && pokemons.length < kantoLength && <Loader />}
+      {!isLoading && pokemons.length === kantoLength && (
+        <>
+          <div className={classes.pokeball}>
+            <PokeBall />
+          </div>
+          <div className={classes.gridContainer}>
+            <PokemonList getPokemonIdHandler={getPokemonIdHandler} pokemons={pokemons} />
+            <PokemonInfo currentPokemonInfo={pokemons[currentPokemon]} />
+          </div>
+        </>
+      )}
+    </>
+  );
+};
+
+export default App;

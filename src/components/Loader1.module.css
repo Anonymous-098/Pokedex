@@ -1,0 +1,19 @@
+.loader {
+  height: 30vh;
+  width: 30%;
+  opacity: 1;
+  animation: loading 3s ease forwards infinite;
+  position: fixed;
+  z-index: -10;
+  top: 40vh;
+  right: 15vh;
+}
+
+@keyframes loading {
+  from {
+    transform: rotateZ(0deg);
+  }
+  to {
+    transform: rotateZ(360deg);
+  }
+}

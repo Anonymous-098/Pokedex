@@ -1,0 +1,74 @@
+import React, { useEffect, useState } from "react";
+import PokeBall from "./svgs/PokeBall";
+import classes from "./App.module.css";
+import Loader from "./components/Loader";
+import PokemonList from "./components/PokemonList";
+
+const App = () => {
+  const [pokemons, setPokemons] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  let temp = [];
+  var kantoLength = 151;
+  
+  useEffect(() => {
+    fetch("https://pokeapi.co/api/v2/pokemon/?limit="+kantoLength)
+      .then(function (response) {
+        if (response.ok) {
+          return response.json();
+        } else {
+          return Promise.reject(response);
+        }
+      })
+      .then(function (data) {
+        data.results.map((pokemon) => {
+          return fetch("https://pokeapi.co/api/v2/pokemon/" + pokemon.name)
+            .then(function (response) {
+              if (response.ok) {
+                return response.json();
+              } else {
+                return Promise.reject(response);
+              }
+            })
+            .then(function (pokeData) {
+              // var pokemonObject = {
+              //   pokemonName: pokemon.name,
+              //   pokemonData: pokeData,
+              // };
+              // sendData(pokemonObject);
+              // return pokemonObject;
+              return fetch("https://pokeapi.co/api/v2/pokemon-species/" + pokeData.id)
+              .then(function(descResponse){
+                console.log(descResponse.json());
+              })
+            });
+        });
+      });
+  }, []);
+
+  function sendData(pokeObj) {
+    var obj = pokeObj;
+    setPokemons((prevState) => {
+      return [...prevState, obj];
+    });
+    temp.push(obj);
+    setIsLoading(false);
+  }
+
+  return (
+    <>
+      {isLoading && <Loader />}
+      {!isLoading && pokemons.length < kantoLength && <Loader />}
+      {!isLoading && pokemons.length === kantoLength &&(
+        <>
+          <div className={classes.pokeball}>
+            <PokeBall />
+          </div>
+          <PokemonList pokemons={pokemons} />
+        </>
+      )}
+    </>
+  );
+};
+
+export default App;

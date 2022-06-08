@@ -1,0 +1,15 @@
+.fadedClass{
+    animation: fade_out 2s;
+}
+
+@keyframes fade_out {
+    0%{
+        transform: translateX(0);
+    }
+    50%{
+        transform: translateX(600px);
+    }
+    100%{
+        transform: translateX(0);
+    }
+}

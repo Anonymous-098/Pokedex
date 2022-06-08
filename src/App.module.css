@@ -1,0 +1,16 @@
+.pokeball{
+    height: 150vh;
+    width: 100%;
+    position: fixed;
+    top: -400px;
+    left: -750px;
+    opacity: 0.5;
+    z-index: -10;
+    transform: scale(1.2);
+}
+
+.gridContainer{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 8rem;
+}
