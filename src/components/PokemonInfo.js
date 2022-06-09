@@ -3,56 +3,42 @@ import classes from "./PokemonInfo.module.css";
 import Photo from "../images/7.png";
 import Loader1 from "./Loader1";
 import "./animation.css";
+import PokemonCompleteInfo from "./PokemonCompleteInfo";
 
 const PokemonInfo = (props) => {
-  console.log(props);
-  const [animatedSprite, setAnimatedSprite] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const prevSprite = useRef("");
 
-  var pokemon;
-  if (props.currentPokemonInfo !== undefined)
-    pokemon = props.currentPokemonInfo.pokemonName;
-  // else pokemon = Photo;
+  if (props.currentPokemonInfo !== undefined) {
+    var currentPokemonSprite = props.currentPokemonInfo.pokemonSprite;
+    var currentName = props.currentPokemonInfo.pokemonName;
+    var currentData = props.currentPokemonInfo.pokemonData;
+    var currentDesc = props.currentPokemonInfo.pokemonDesc;
+  }
+  if (props.previousPokemonInfo !== undefined) {
+    var previousPokemonSprite = props.previousPokemonInfo.pokemonSprite;
+    var previousName = props.previousPokemonInfo.pokemonName;
+    var previousData = props.previousPokemonInfo.pokemonData;
+    var previousDesc = props.previousPokemonInfo.pokemonDesc;
+  }
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(
-      "https://pokeapi.co/api/v2/pokemon/" +
-        `${pokemon !== undefined ? pokemon : ""}`
-    )
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (data) {
-        setAnimatedSprite(
-          data.sprites.versions["generation-v"]["black-white"].animated
-            .front_default
-        );
-        return data
-          .sprites.versions["generation-v"]["black-white"].animated.front_default;
-      });
-
     setTimeout(() => {
       props.setIsClicked(false);
       setIsLoading(false);
-    }, 3000);
-  }, [pokemon]);
-
-  useEffect(() => {
-    prevSprite.current = animatedSprite;
-  }, [animatedSprite]);
+    }, 1000);
+  }, [currentPokemonSprite]);
 
   return (
     <div>
-      {pokemon !== undefined ? <Loader1 /> : ""}
+      {currentPokemonSprite ? <Loader1 /> : ""}
       <div
         className={`${classes.pokeInfo} ${
           props.isClicked ? "slideOut" : "slideIn"
         }`}
       >
         {/* INITIAL TILE */}
-        {!pokemon && (
+        {!currentPokemonSprite && (
           <div>
             <img src={Photo} className={classes.img} />
             <p>Select a pokemon to display here</p>
@@ -60,21 +46,23 @@ const PokemonInfo = (props) => {
         )}
 
         {/* PREVIOUS POKEMON TILE */}
-        {pokemon && isLoading && (
-          <div>
-            <img src={prevSprite.current} className={classes.sprite} />
-            <div className={classes.pokemonData}>
-              
-            </div>
-          </div>
+        {isLoading && (
+          <PokemonCompleteInfo
+            name={previousName}
+            data={previousData}
+            desc={previousDesc}
+            pokemonSprite={previousPokemonSprite}
+          />
         )}
 
         {/* NEXT POKEMON TILE */}
-        {pokemon && !isLoading && (
-          <div>
-            <img src={animatedSprite} className={classes.sprite} />
-            <div className={classes.pokemonData}></div>
-          </div>
+        {!isLoading && (
+          <PokemonCompleteInfo
+            name={currentName}
+            data={currentData}
+            desc={currentDesc}
+            pokemonSprite={currentPokemonSprite}
+          />
         )}
       </div>
     </div>

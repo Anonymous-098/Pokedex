@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PokeBall from "./svgs/PokeBall";
 import classes from "./App.module.css";
 import Loader from "./components/Loader";
@@ -7,16 +7,16 @@ import PokemonInfo from "./components/PokemonInfo";
 
 const App = () => {
   const [pokemons, setPokemons] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [currentPokemonId, setCurrentPokemonId] = useState("");
-  const [currentPokemon, setCurrentPokemon] = useState();
-
+  const [isLoading, setIsLoading] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
+  const [currentPokemon, setCurrentPokemon] = useState();
+  const [previousPokemon,setPreviousPokemon] = useState();
 
-  var kantoLength = 151;
+  var kantoLength = 15;
 
   //// PRIMARY SOLUTION
   useEffect(() => {
+    setIsLoading(true);
     fetch("https://pokeapi.co/api/v2/pokemon/?limit=" + kantoLength)
       .then(function (response) {
         return response.json();
@@ -50,31 +50,31 @@ const App = () => {
                       pokemonName: pokemon.name,
                       pokemonData: nestedData,
                       pokemonDesc: finalDesc[0],
+                      pokemonSprite: nestedData.sprites.versions["generation-v"]["black-white"].animated.front_default
                     };
                     sendData(pokemonObject);
-                    return pokemonObject;
+                    // return pokemonObject;
                   });
               });
           })
         );
       });
+    setIsLoading(false);
   }, []);
 
   function sendData(pokeObj) {
-    var obj = pokeObj;
     setPokemons((prevState) => {
-      return [...prevState, obj];
+      return [...prevState, pokeObj];
     });
-    setIsLoading(false);
   }
 
   const getPokemonIdHandler = (id) => {
     for (var i = 0; i < pokemons.length; i++) {
       if (pokemons[i].pokemonData.id === id) {
+        setPreviousPokemon(currentPokemon);
         setCurrentPokemon(pokemons[i]);
       }
     }
-    setCurrentPokemonId(id);
   };
 
   return (
@@ -96,6 +96,7 @@ const App = () => {
               currentPokemonInfo={currentPokemon}
               isClicked={isClicked}
               setIsClicked={setIsClicked}
+              previousPokemonInfo={previousPokemon}
             />
           </div>
         </>

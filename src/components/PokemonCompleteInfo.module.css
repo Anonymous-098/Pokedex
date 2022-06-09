@@ -1,0 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.sprite {
+  transform: scale(2);
+  image-rendering: pixelated;
+  position: relative;
+  top: -10vh;
+}
+
+.pokemonData{
+  height: 65vh;
+  width: 100%;
+  background-color: aqua;
+  position: fixed;
+  top: 5rem;
+}
+
+.name {
+  text-transform: capitalize;
+  font-weight: bold;
+  font-size: 1.75rem;
+  font-family: "Outfit";
+}

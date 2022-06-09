@@ -1,5 +1,5 @@
 .slideOut {
-  animation: slideOutKeyframes 1500ms ease forwards;
+  animation: slideOutKeyframes 1000ms ease forwards;
 }
 
 @keyframes slideOutKeyframes {
@@ -12,7 +12,7 @@
 }
 
 .slideIn {
-  animation: slideInKeyframes 1500ms ease forwards;
+  animation: slideInKeyframes 1000ms ease forwards;
 }
 
 @keyframes slideInKeyframes {

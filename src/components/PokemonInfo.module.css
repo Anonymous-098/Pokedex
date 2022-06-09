@@ -21,18 +21,3 @@
   top: -135px;
   image-rendering: pixelated;
 }
-
-.sprite {
-  transform: scale(2);
-  image-rendering: pixelated;
-  position: relative;
-  top: -50px;
-}
-
-.pokemonData{
-  height: 75vh;
-  width: 100%;
-  background-color: aqua;
-  position: fixed;
-  top: 3rem;
-}
