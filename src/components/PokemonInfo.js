@@ -37,18 +37,6 @@ const PokemonInfo = (props) => {
           props.isClicked ? "slideOut" : "slideIn"
         }`}
       >
-        {/* INITIAL TILE */}
-        {!currentPokemonSprite && (
-          <div>
-            <img
-              src={Photo}
-              className={classes.sprite}
-              height={75}
-              width={65}
-            />
-            <p>Select a pokemon to display here</p>
-          </div>
-        )}
 
         {/* PREVIOUS POKEMON TILE */}
         {isLoading && (
@@ -57,6 +45,8 @@ const PokemonInfo = (props) => {
             data={previousData}
             desc={previousDesc}
             pokemonSprite={previousPokemonSprite}
+            photo={Photo}
+            title={'Select a pokemon to display here'}
           />
         )}
 

@@ -56,16 +56,20 @@ const PokemonCompleteInfo = (props) => {
     // console.log(offsetHeight, offsetWidth);
   };
 
-  return (
-    <div>
-      {props.data!==undefined && <img
-        // onLoad={onImgLoad}
-        src={props.pokemonSprite}
-        className={classes.sprite}
-        height={70}
-        width={65}
-      />}
-      {props.data !== undefined && (
+  if (props.data !== undefined) {
+    return (
+      <div>
+
+        {/* POKEMON SPRITE */}
+        <img
+          // onLoad={onImgLoad}
+          src={props.pokemonSprite}
+          className={classes.sprite}
+          height={70}
+          width={65}
+        />
+
+        {/* POKEMON COMPLETE INFO */}
         <div className={classes.pokemonData}>
           <p className={classes.id}>N° {props.data.id}</p>
           <p className={classes.name}>{props.name}</p>
@@ -101,7 +105,7 @@ const PokemonCompleteInfo = (props) => {
                     </span>
                   </>
                 )}
-                {abilities.length >=2 && (
+                {abilities.length >= 2 && (
                   <>
                     <span className={classes.flexSpan}>{abilities[0]}</span>
                     <span className={classes.flexSpan}>{abilities[1]}</span>
@@ -141,9 +145,21 @@ const PokemonCompleteInfo = (props) => {
           </div>
           <div></div>
         </div>
-      )}
-    </div>
-  );
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <img
+          src={props.photo}
+          className={classes.sprite}
+          height={80}
+          width={65}
+        />
+        <p>{props.title}</p>
+      </div>
+    );
+  }
 };
 
 export default PokemonCompleteInfo;
