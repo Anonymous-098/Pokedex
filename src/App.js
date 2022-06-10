@@ -12,7 +12,7 @@ const App = () => {
   const [currentPokemon, setCurrentPokemon] = useState();
   const [previousPokemon,setPreviousPokemon] = useState();
 
-  var kantoLength = 15;
+  var kantoLength = 151;
 
   //// PRIMARY SOLUTION
   useEffect(() => {

@@ -26,7 +26,7 @@ const PokemonInfo = (props) => {
     setTimeout(() => {
       props.setIsClicked(false);
       setIsLoading(false);
-    }, 1000);
+    }, 2000);
   }, [currentPokemonSprite]);
 
   return (
@@ -40,7 +40,12 @@ const PokemonInfo = (props) => {
         {/* INITIAL TILE */}
         {!currentPokemonSprite && (
           <div>
-            <img src={Photo} className={classes.img} />
+            <img
+              src={Photo}
+              className={classes.sprite}
+              height={75}
+              width={65}
+            />
             <p>Select a pokemon to display here</p>
           </div>
         )}

@@ -1,6 +1,6 @@
 .pokeInfo {
   height: 80vh;
-  width: 20%;
+  width: 22%;
   background-color: white;
   margin: 8rem 0 4rem 0;
   border-radius: 25px;
@@ -10,9 +10,8 @@
     top: 10vh;
     box-sizing: border-box; */
   position: fixed;
-  right: 12.5%;
+  right: 10%;
   z-index: 10;
-  /* animation: slideOutKeyframes 2s ease forwards; */
 }
 
 .img {
@@ -20,4 +19,11 @@
   position: relative;
   top: -135px;
   image-rendering: pixelated;
+}
+
+.sprite {
+  transform: scale(2);
+  image-rendering: pixelated;
+  position: relative;
+  top: -7.5vh;
 }
