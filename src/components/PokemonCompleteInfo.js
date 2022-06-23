@@ -3,6 +3,7 @@ import classes from "./PokemonCompleteInfo.module.css";
 import PokemonTypes from "./PokemonTypes";
 
 const PokemonCompleteInfo = (props) => {
+  // console.log(props.data);
   if (props.data !== undefined) {
     var allStats = props.data.stats;
     var stats = [];
@@ -59,7 +60,6 @@ const PokemonCompleteInfo = (props) => {
   if (props.data !== undefined) {
     return (
       <div>
-
         {/* POKEMON SPRITE */}
         <img
           // onLoad={onImgLoad}

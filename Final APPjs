@@ -4,7 +4,6 @@ import classes from "./App.module.css";
 import Loader from "./components/Loader";
 import PokemonList from "./components/PokemonList";
 import PokemonInfo from "./components/PokemonInfo";
-import axios from "axios";
 
 const App = () => {
   const [pokemons, setPokemons] = useState([]);
@@ -15,54 +14,51 @@ const App = () => {
 
   var kantoLength = 151;
 
-  // SECONDARY SOLUTION 
-
-  async function getPokemon() {
-    const response = await axios.get(
-      "https://pokeapi.co/api/v2/pokemon/?limit=" + kantoLength
-    );
-    const data = await response.data;
-    const result = await data.results;
-
-    const promises = result.map(async (pokemon) => {
-      const nestedResponse = await axios.get(pokemon.url);
-      return nestedResponse;
-    });
-
-    const temp = await Promise.all(promises);
-
-    temp.map((pokemon) => {
-      var tempDesc;
-      const doubleNestedResponse = axios.get(
-        "https://pokeapi.co/api/v2/pokemon-species/" + pokemon.data.id
-      );
-      doubleNestedResponse.then(function (descData) {
-        var desc = descData.data.flavor_text_entries.map(
-          (flavor_text_array) => {
-            if (flavor_text_array.language.name === "en") {
-              return flavor_text_array.flavor_text;
-            }
-          }
-        );
-        var finalDesc = desc.filter(function (element) {
-          return element !== undefined;
-        });
-        tempDesc = finalDesc[0];
-      });
-
-      var pokemonObject = {
-        pokemonName: pokemon.data.name,
-        pokemonData: pokemon.data,
-        pokemonDesc: tempDesc,
-        pokemonSprite: pokemon.data.sprites.versions["generation-v"]["black-white"].animated.front_default
-      };
-      sendData(pokemonObject);
-    });
-  }
-  
+  //// PRIMARY SOLUTION
   useEffect(() => {
     setIsLoading(true);
-    getPokemon();
+    fetch("https://pokeapi.co/api/v2/pokemon/?limit=" + kantoLength)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        Promise.all(
+          data.results.map((pokemon) => {
+            return fetch("https://pokeapi.co/api/v2/pokemon/" + pokemon.name)
+              .then(function (nestedResponse) {
+                return nestedResponse.json();
+              })
+              .then(function (nestedData) {
+                return fetch(
+                  "https://pokeapi.co/api/v2/pokemon-species/" + nestedData.id
+                )
+                  .then(function (descResponse) {
+                    return descResponse.json();
+                  })
+                  .then(function (descData) {
+                    var desc = descData.flavor_text_entries.map(
+                      (flavor_text_array) => {
+                        if (flavor_text_array.language.name === "en") {
+                          return flavor_text_array.flavor_text;
+                        }
+                      }
+                    );
+                    var finalDesc = desc.filter(function (element) {
+                      return element !== undefined;
+                    });
+                    var pokemonObject = {
+                      pokemonName: pokemon.name,
+                      pokemonData: nestedData,
+                      pokemonDesc: finalDesc[0],
+                      pokemonSprite: nestedData.sprites.versions["generation-v"]["black-white"].animated.front_default
+                    };
+                    sendData(pokemonObject);
+                    // return pokemonObject;
+                  });
+              });
+          })
+        );
+      });
     setIsLoading(false);
   }, []);
 

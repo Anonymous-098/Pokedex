@@ -57,6 +57,8 @@ const PokemonInfo = (props) => {
             data={currentData}
             desc={currentDesc}
             pokemonSprite={currentPokemonSprite}
+            photo={Photo}
+            title={'Select a pokemon to display here'}
           />
         )}
       </div>

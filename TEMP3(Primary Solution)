@@ -1,0 +1,48 @@
+// PRIMARY SOLUTION
+  useEffect(() => {
+    setIsLoading(true);
+    fetch("https://pokeapi.co/api/v2/pokemon/?limit=" + kantoLength)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        Promise.all(
+          data.results.map((pokemon) => {
+            return fetch("https://pokeapi.co/api/v2/pokemon/" + pokemon.name)
+              .then(function (nestedResponse) {
+                return nestedResponse.json();
+              })
+              .then(function (nestedData) {
+                return fetch(
+                  "https://pokeapi.co/api/v2/pokemon-species/" + nestedData.id
+                )
+                  .then(function (descResponse) {
+                    return descResponse.json();
+                  })
+                  .then(function (descData) {
+                    var desc = descData.flavor_text_entries.map(
+                      (flavor_text_array) => {
+                        if (flavor_text_array.language.name === "en") {
+                          return flavor_text_array.flavor_text;
+                        }
+                      }
+                    );
+                    var finalDesc = desc.filter(function (element) {
+                      return element !== undefined;
+                    });
+                    // return pokemonObject;
+                  });
+                  var pokemonObject = {
+                    pokemonName: pokemon.name,
+                    pokemonData: nestedData,
+                    pokemonDesc: finalDesc[0],
+                    pokemonSprite: nestedData.sprites.versions["generation-v"]["black-white"].animated.front_default
+                  };
+                  sendData(pokemonObject);
+              });
+          })
+        );
+      });
+    setIsLoading(false);
+  }, []);
+
