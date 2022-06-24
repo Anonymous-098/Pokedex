@@ -6,7 +6,8 @@ const PokemonList = (props) => {
   return (
     <ul className={classes.list}>
       {props.pokemons.map((pokemon) => {
-        return (
+        // console.log(pokemon.pokemonName)
+        return pokemon.pokemonName.includes(props.enteredValue) ? (
           <PokemonTile
             key={pokemon.pokemonData.id}
             pokemonName={pokemon.pokemonName}
@@ -14,6 +15,8 @@ const PokemonList = (props) => {
             getPokemonIdHandler={props.getPokemonIdHandler}
             setIsClicked={props.setIsClicked}
           />
+        ) : (
+          ""
         );
       })}
     </ul>

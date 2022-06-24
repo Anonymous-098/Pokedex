@@ -1,0 +1,55 @@
+// SECONDARY SOLUTION
+
+async function getPokemon() {
+    const response = await axios.get(
+      "https://pokeapi.co/api/v2/pokemon/?limit=" + kantoLength
+    );
+    const data = await response.data;
+    const result = await data.results;
+
+    const promises = result.map(async (pokemon) => {
+      const nestedResponse = await axios.get(pokemon.url);
+      return nestedResponse;
+    });
+
+    const temp = await Promise.all(promises);
+    let tempDesc;
+
+    temp.map((pokemon) => {
+      const doubleNestedResponse = axios.get(
+        "https://pokeapi.co/api/v2/pokemon-species/" + pokemon.data.id
+      );
+      doubleNestedResponse.then(function (descData) {
+        console.log(descData.data.id);
+        var desc = descData.data.flavor_text_entries.map(
+          (flavor_text_array) => {
+            if (flavor_text_array.language.name === "en") {
+              return flavor_text_array.flavor_text;
+            }
+          }
+        );
+        var finalDesc = desc.filter(function (element) {
+          return element !== undefined;
+        });
+        tempDesc = finalDesc[0];
+        // console.log(tempDesc);               // <--------  PROBLEM HERE
+      });
+      // console.log(tempDesc);
+
+      var pokemonObject = {
+        pokemonName: pokemon.data.name,
+        pokemonData: pokemon.data,
+        pokemonDesc: tempDesc,
+        pokemonSprite:
+          pokemon.data.sprites.versions["generation-v"]["black-white"].animated
+            .front_default,
+      };
+      sendData(pokemonObject);
+    });
+  }
+
+  useEffect(() => {
+    setIsLoading(true);
+    getPokemon();
+    setIsLoading(false);
+  }, []);

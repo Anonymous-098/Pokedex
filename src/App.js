@@ -5,17 +5,17 @@ import Loader from "./components/Loader";
 import PokemonList from "./components/PokemonList";
 import PokemonInfo from "./components/PokemonInfo";
 import axios from "axios";
+import Search from "./components/Search";
 
 const App = () => {
   const [pokemons, setPokemons] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const [currentPokemon, setCurrentPokemon] = useState();
-  const [previousPokemon,setPreviousPokemon] = useState();
+  const [previousPokemon, setPreviousPokemon] = useState();
+  const [enteredValue, setEnteredValue] = useState("");
 
   var kantoLength = 151;
-
-  // SECONDARY SOLUTION 
 
   async function getPokemon() {
     const response = await axios.get(
@@ -31,35 +31,43 @@ const App = () => {
 
     const temp = await Promise.all(promises);
 
-    temp.map((pokemon) => {
-      var tempDesc;
+    const nestedPromises = temp.map(async (pokemon) => {
       const doubleNestedResponse = axios.get(
         "https://pokeapi.co/api/v2/pokemon-species/" + pokemon.data.id
       );
-      doubleNestedResponse.then(function (descData) {
-        var desc = descData.data.flavor_text_entries.map(
-          (flavor_text_array) => {
-            if (flavor_text_array.language.name === "en") {
-              return flavor_text_array.flavor_text;
-            }
-          }
-        );
-        var finalDesc = desc.filter(function (element) {
-          return element !== undefined;
-        });
-        tempDesc = finalDesc[0];
-      });
+      return doubleNestedResponse;
+    });
 
+    var tempDesc = [];
+    const temp1 = await Promise.all(nestedPromises);
+
+    var desc = temp1.map((descData) => {
+      const enDescriptions = descData.data.flavor_text_entries.map(
+        (flavor_text_array) => {
+          if (flavor_text_array.language.name === "en") {
+            return flavor_text_array.flavor_text;
+          }
+        }
+      );
+      var finalDesc = enDescriptions.filter(function (element) {
+        return element !== undefined;
+      });
+      tempDesc.push(finalDesc[0]);
+    });
+
+    for (var i = 0; i < tempDesc.length; i++) {
       var pokemonObject = {
-        pokemonName: pokemon.data.name,
-        pokemonData: pokemon.data,
-        pokemonDesc: tempDesc,
-        pokemonSprite: pokemon.data.sprites.versions["generation-v"]["black-white"].animated.front_default
+        pokemonName: temp[i].data.name,
+        pokemonData: temp[i].data,
+        pokemonDesc: tempDesc[i],
+        pokemonSprite:
+          temp[i].data.sprites.versions["generation-v"]["black-white"].animated
+            .front_default,
       };
       sendData(pokemonObject);
-    });
+    }
   }
-  
+
   useEffect(() => {
     setIsLoading(true);
     getPokemon();
@@ -81,6 +89,10 @@ const App = () => {
     }
   };
 
+  const getEnteredValue = (val) => {
+    setEnteredValue(val);
+  };
+
   return (
     <>
       {isLoading && <Loader />}
@@ -91,11 +103,15 @@ const App = () => {
             <PokeBall />
           </div>
           <div className={classes.gridContainer}>
-            <PokemonList
-              getPokemonIdHandler={getPokemonIdHandler}
-              pokemons={pokemons}
-              setIsClicked={setIsClicked}
-            />
+            <div className={classes.flexContainer}>
+              <Search getEnteredValue={getEnteredValue} />
+              <PokemonList
+                getPokemonIdHandler={getPokemonIdHandler}
+                pokemons={pokemons}
+                setIsClicked={setIsClicked}
+                enteredValue={enteredValue}
+              />
+            </div>
             <PokemonInfo
               currentPokemonInfo={currentPokemon}
               isClicked={isClicked}

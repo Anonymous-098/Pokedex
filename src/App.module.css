@@ -14,3 +14,14 @@
     grid-template-columns: 2fr 1fr;
     grid-gap: 8rem;
 }
+
+.flexContainer{
+    display:flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    text-align: center;
+    padding-top: 1rem;
+    /* background-color: lightcoral; */
+    margin-left: 5rem
+}
